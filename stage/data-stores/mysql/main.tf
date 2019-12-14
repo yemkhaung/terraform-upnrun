@@ -22,7 +22,7 @@ terraform {
   }
 }
 
-resource "aws_db_instance" "example" {
+resource "aws_db_instance" "tfupnrun_db" {
   identifier_prefix   = "terraform-up-and-running"
   engine              = "mysql"
   allocated_storage   = 10

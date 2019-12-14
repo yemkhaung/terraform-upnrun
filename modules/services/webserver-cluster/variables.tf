@@ -17,6 +17,11 @@ variable "db_remote_state_key" {
   type        = string
 }
 
+variable "enable_autoscaling" {
+  description = "If set to true, enable auto scaling"
+  type = bool
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # ---------------------------------------------------------------------------------------------------------------------
@@ -24,6 +29,7 @@ variable "db_remote_state_key" {
 variable "server_port" {
   description = "The port the server will use for HTTP requests"
   type        = number
+  default     = 8080
 }
 
 variable "instance_type" {
@@ -39,4 +45,13 @@ variable "min_size" {
 variable "max_size" {
   description = "The maximum number of EC2 Instances in the ASG"
   type = number
+}
+
+variable "ami" {
+  description = "The AMI to run in the cluster"
+  default = "ami-0c55b159cbfafe1f0"
+}
+variable "server_text" {
+  description = "The text the web server should return"
+  default = "Hello, World"
 }
