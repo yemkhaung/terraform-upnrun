@@ -20,10 +20,11 @@ module "webserver-cluster" {
   
   # instance autoscaling group
   ami = "ami-0c55b159cbfafe1f0"
-  server_text        = "New server"
   server_port        = 8080
   instance_type      = "t2.micro"
   min_size           = 2
   max_size           = 2
   enable_autoscaling = false
+  # Change here to trigger zero-downtime deployment
+  #  server_text        = "New server deployment"
 }

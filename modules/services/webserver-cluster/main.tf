@@ -23,12 +23,23 @@ data "template_file" "user_data" {
 }
 
 resource "aws_autoscaling_group" "webserver_asg" {
+  # Explicitly making a dependency between autoscaling-group and launch-configuration
+  # so each time launch-config replaced, this ASG is also replaced
+  name = "${var.cluster_name}-${aws_launch_configuration.webserver.name}"
   launch_configuration = aws_launch_configuration.webserver.name
   vpc_zone_identifier  = data.aws_subnet_ids.default.ids
   target_group_arns    = [aws_lb_target_group.asg.arn]
   health_check_type    = "ELB"
   min_size             = var.min_size
   max_size             = var.max_size
+  # Wait for at least this many instances to pass health checks before
+  # considering the ASG deployment complete
+  min_elb_capacity     = var.min_size
+  # zero-downtime deployment
+  # thus creating a replacement first before deleting old one
+  lifecycle {
+    create_before_destroy = true
+  }
   tag {
     key                 = "Name"
     value               = "${var.cluster_name}-asg"
